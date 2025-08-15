@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Car, TrendingUp, Shield, Users, ArrowRight, Star, CheckCircle, Moon, Sun, Menu, X, Zap, BarChart3, Globe } from 'lucide-react'
+import { Car, TrendingUp, Shield, Users, ArrowRight, Star, DollarSign, Moon, Sun, Menu, X, Zap, BarChart3, Globe } from 'lucide-react'
+import { useNavigate ,Link } from 'react-router-dom'
+import { getTheme, setTheme } from '../theme'
 import './LandingPage.css'
+import Footer from './Footer'
+import Header from './Header'
 
 const LandingPage: React.FC = () => {
-  const [isDarkMode, setIsDarkMode] = useState(true)
+  const [isDarkMode, setIsDarkMode] = useState(getTheme() === 'dark')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
 
@@ -12,12 +16,26 @@ const LandingPage: React.FC = () => {
       setIsScrolled(window.scrollY > 50)
     }
     window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+
+    // Listen for theme changes from other pages
+    const handleThemeChange = (e: any) => {
+      setIsDarkMode(e.detail === 'dark')
+    }
+    window.addEventListener('themechange', handleThemeChange)
+
+    // Sync with current theme on mount
+    setIsDarkMode(getTheme() === 'dark')
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('themechange', handleThemeChange)
+    }
   }, [])
 
   const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode)
-    document.body.classList.toggle('light-mode')
+    const newTheme = isDarkMode ? 'light' : 'dark'
+    setTheme(newTheme)
+    setIsDarkMode(newTheme === 'dark')
   }
 
   const scrollToSection = (sectionId: string) => {
@@ -28,51 +46,20 @@ const LandingPage: React.FC = () => {
     setIsMobileMenuOpen(false)
   }
 
+  const navigate = useNavigate();
   return (
     <div className={`landing-page ${isDarkMode ? 'dark' : 'light'}`}>
-      {/* Navigation */}
-      <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
-        <div className="nav-container">
-          <div className="nav-logo">
-            <Car className="logo-icon" />
-            <span className="logo-text">Caralytix</span>
-          </div>
-          
-          <div className={`nav-links ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
-            <a onClick={() => scrollToSection('features')}>Features</a>
-            <a onClick={() => scrollToSection('how-it-works')}>How it Works</a>
-            <a onClick={() => scrollToSection('pricing')}>Pricing</a>
-            <a onClick={() => scrollToSection('contact')}>Contact</a>
-          </div>
-          
-          <div className="nav-actions">
-            <button 
-              className="theme-toggle" 
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-            >
-              {isDarkMode ? <Sun className="theme-icon" /> : <Moon className="theme-icon" />}
-            </button>
-            
-            <div className="nav-buttons">
-              <button className="btn-secondary">Sign In</button>
-              <button className="btn-primary">Get Started</button>
-            </div>
-            
-            <button 
-              className="mobile-menu-toggle"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X /> : <Menu />}
-            </button>
-          </div>
-        </div>
-      </nav>
+     
+     <Header></Header>
 
       {/* Hero Section */}
       <section className="hero">
         <div className="hero-background">
           <div className="hero-particles"></div>
+          {/* Animated car driving across the hero section */}
+          <div className="hero-car-drive">
+            <Car className="hero-car-icon" />
+          </div>
         </div>
         <div className="hero-container">
           <div className="hero-content">
@@ -89,14 +76,13 @@ const LandingPage: React.FC = () => {
               Analyze market trends, compare prices, and make informed decisions with 95% accuracy.
             </p>
             <div className="hero-buttons">
-              <button className="btn-primary btn-large">
-                Start Free Analysis
-                <ArrowRight className="btn-icon" />
-              </button>
-              <button className="btn-outline btn-large">
-                <BarChart3 className="btn-icon" />
-                View Demo
-              </button>
+              <Link to="/prediction" className="btn-primary btn-large">
+                <DollarSign size={20} />
+                Get an Estimate
+              </Link>
+              <Link to="/contact" className="btn-secondary btn-large">
+                Learn More
+              </Link>
             </div>
             <div className="hero-stats">
               <div className="stat">
@@ -113,13 +99,13 @@ const LandingPage: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="hero-image">
-            <div className="hero-card">
-              <div className="card-header">
-                <Car className="card-icon" />
-                <span>Price Prediction</span>
-                <div className="card-badge">Live</div>
-              </div>
+            <div className="hero-image">
+              <div className="hero-card animated-card">
+                <div className="card-header">
+                  <Car className="card-icon animated-card-car" />
+                  <span>Price Prediction</span>
+                  <div className="card-badge">Live</div>
+                </div>
               <div className="prediction-form">
                 <div className="form-group">
                   <label>Car Model</label>
@@ -320,56 +306,9 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="footer">
-        <div className="container">
-          <div className="footer-content">
-            <div className="footer-section">
-              <div className="footer-logo">
-                <Car className="logo-icon" />
-                <span className="logo-text">Caralytix</span>
-              </div>
-              <p>AI-powered car price prediction platform</p>
-              <div className="social-links">
-                <a href="#" className="social-link">Twitter</a>
-                <a href="#" className="social-link">LinkedIn</a>
-                <a href="#" className="social-link">GitHub</a>
-              </div>
-            </div>
-            <div className="footer-section">
-              <h4>Product</h4>
-              <a href="#features">Features</a>
-              <a href="#pricing">Pricing</a>
-              <a href="#api">API</a>
-              <a href="#integrations">Integrations</a>
-            </div>
-            <div className="footer-section">
-              <h4>Company</h4>
-              <a href="#about">About</a>
-              <a href="#contact">Contact</a>
-              <a href="#careers">Careers</a>
-              <a href="#blog">Blog</a>
-            </div>
-            <div className="footer-section">
-              <h4>Support</h4>
-              <a href="#help">Help Center</a>
-              <a href="#docs">Documentation</a>
-              <a href="#status">Status</a>
-              <a href="#contact">Contact Us</a>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <p>&copy; 2025 Caralytix. All rights reserved.</p>
-            <div className="footer-links">
-              <a href="#privacy">Privacy Policy</a>
-              <a href="#terms">Terms of Service</a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer></Footer>
     </div>
   )
 }
 
-export default LandingPage 
+export default LandingPage

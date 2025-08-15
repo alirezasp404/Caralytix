@@ -1,0 +1,75 @@
+/* CarLoader.css - Animated car loading spinner */
+
+.car-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 80px;
+  margin: 0 auto;
+}
+
+.car-loader-car {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: car-bounce-loader 1.2s infinite cubic-bezier(.68,-0.55,.27,1.55);
+}
+
+.car-loader-icon {
+  width: 48px;
+  height: 32px;
+  color: #ffd700;
+  z-index: 2;
+}
+
+.car-loader-wheels {
+  position: absolute;
+  left: 6px;
+  bottom: -8px;
+  width: 36px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 1;
+}
+
+.car-loader-wheel {
+  width: 12px;
+  height: 12px;
+  background: #23232a;
+  border-radius: 50%;
+  border: 2px solid #ffd700;
+  animation: wheel-spin 0.7s linear infinite;
+}
+
+.car-loader-wheel.right {
+  margin-left: 12px;
+}
+
+@keyframes wheel-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes car-bounce-loader {
+  0%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-10px); }
+  60% { transform: translateY(4px); }
+}
+
+.car-loader-road {
+  width: 60px;
+  height: 6px;
+  background: repeating-linear-gradient(90deg, #ffd700 0 10px, transparent 10px 20px);
+  border-radius: 3px;
+  margin-top: 8px;
+  opacity: 0.7;
+  animation: road-move 1.2s linear infinite;
+}
+
+@keyframes road-move {
+  0% { background-position-x: 0; }
+  100% { background-position-x: 60px; }
+}

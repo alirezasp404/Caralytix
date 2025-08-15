@@ -1,0 +1,331 @@
+/* Auth.css - Styles for SignIn and SignUp components */
+
+.auth-container {
+  position: relative;
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-primary); /* Use theme gradient */
+  padding: 2rem 1rem;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.auth-card {
+  background: var(--bg-card); /* Use theme background */
+  color: var(--text-primary); /* Use theme text color */
+  border-radius: 16px;
+  box-shadow: var(--shadow-medium); /* Use theme shadow */
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 480px;
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--accent-primary); /* Use theme accent */
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.auth-logo .logo-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.auth-header h1 {
+  color: var(--text-primary); /* Use theme text color */
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+  color: var(--text-secondary); /* Use theme secondary text color */
+  font-size: 1rem;
+  margin: 0;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  color: var(--text-primary) !important; /* Use theme text color */
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex; /* Use flexbox to align items horizontally */
+  align-items: center; /* Vertically center the icon and input */
+  gap: 0.75rem
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 0.75rem 1rem; /* Adjust padding to make room for icon and button */
+  border: 2px solid var(--border-color); /* Use theme border color */
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: var(--bg-secondary) !important; /* Use theme background */
+  color: var(--text-primary) ; /* Use theme text color */
+}
+
+.input-wrapper input:focus {
+  outline: none;
+  border-color: var(--accent-primary); /* Use theme accent */
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.input-wrapper input::placeholder {
+  color: var(--text-muted); /* Use theme muted text color */
+  opacity: 0.7;
+}
+
+.input-icon {
+  color: var(--text-secondary); /* Use theme text color */
+  width: 20px;
+  height: 20px;
+
+}
+
+.password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: var(--text-secondary); /* Use theme text color */
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+  z-index: 2;
+}
+
+.password-toggle:hover {
+  color: var(--accent-primary); /* Use theme accent */
+}
+
+.password-requirements {
+  margin-top: 0.25rem;
+}
+
+.password-requirements small {
+  color: var(--text-muted); /* Use theme muted text color */
+  font-size: 0.75rem;
+}
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--text-secondary); /* Use theme text color */
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  /* `accent-color` will color the checkmark, we need a background color */
+  background-color: var(--bg-card); /* Add this to control the checkbox background */
+  border: 1px solid var(--border-color); /* Add this to control the checkbox border */
+  border-radius: 4px;
+  -webkit-appearance: none; /* Crucial for controlling the visual appearance */
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  accent-color: var(--accent-primary);
+  transition: all 0.2s ease;
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked {
+  background-color: var(--accent-primary); /* Change background when checked */
+  border-color: var(--accent-primary);
+}
+.checkbox-wrapper a {
+  color: var(--accent-primary); /* Use theme accent */
+  text-decoration: none;
+}
+
+.checkbox-wrapper a:hover {
+  text-decoration: underline;
+}
+
+.forgot-link {
+  color: var(--accent-primary); /* Use theme accent */
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+.auth-button {
+  background: var(--gradient-primary); /* Use theme gradient */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.auth-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-light); /* Use theme shadow */
+}
+
+.auth-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color); /* Use theme border color */
+}
+
+.auth-footer p {
+  color: var(--text-secondary); /* Use theme text color */
+  margin: 0;
+}
+
+.auth-footer a {
+  color: var(--accent-primary); /* Use theme accent */
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+.divider {
+  display: flex; /* Use flexbox to align the lines and text */
+  align-items: center; /* Vertically center all items */
+  text-align: center;
+  margin: 1.5rem 0;
+  color: var(--text-secondary); /* Colors the 'or continue with' text */
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex-grow: 1; /* This is the key: it makes the lines grow and fill the available space */
+  height: 1px;
+  background: var(--border-color);
+}
+
+.divider span {
+  padding: 0 1rem; /* Adds space around the text, separating it from the lines */
+  background: var(--bg-card); /* This is crucial: it covers the line behind the text */
+  position: relative;
+  z-index: 1; /* Makes sure the text is on top of the lines */
+}
+
+.social-buttons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.social-button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 2px solid var(--border-color); /* Use theme border color */
+  border-radius: 8px;
+  background: var(--bg-secondary); /* Use theme background */
+  color: var(--text-primary); /* Use theme text color */
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.social-button:hover {
+  border-color: var(--accent-primary); /* Use theme accent */
+  background: var(--bg-tertiary); /* Use theme background */
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .auth-container {
+    padding: 1rem;
+  }
+
+  .auth-card {
+    padding: 2rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .social-buttons {
+    flex-direction: column;
+  }
+
+  .auth-header h1 {
+    font-size: 1.75rem;
+  }
+}
