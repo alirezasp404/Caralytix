@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Car, Sun, Moon, Menu, X, LogOut, User } from 'lucide-react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { getTheme, setTheme } from '../theme';
 import './Header.css';
 
@@ -15,6 +15,7 @@ const Header: React.FC<HeaderProps> = ({ showThemeToggle = true, showAuthButtons
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const accountMenuTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -27,8 +28,11 @@ const Header: React.FC<HeaderProps> = ({ showThemeToggle = true, showAuthButtons
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
     setIsLoggedIn(false);
-    navigate('/signin');
+    setShowAccountMenu(false);
+    // Navigate to landing page after logout
+    navigate('/', { replace: true });
   };
 
   useEffect(() => {
@@ -71,9 +75,9 @@ const Header: React.FC<HeaderProps> = ({ showThemeToggle = true, showAuthButtons
           </Link>
         </div>
         <div className={`nav-links ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
-          <a onClick={() => navigate('/prediction')}>Prediction</a>
-          <a onClick={() => navigate('/contact')}>Contact</a>
-          <a onClick={() => navigate('/aboutus')}>About Us</a>
+          <Link to="/prediction">Prediction</Link>
+          <Link to="/contact">Contact</Link>
+          <Link to="/aboutus">About Us</Link>
         </div>
         <div className="nav-actions">
           {showThemeToggle && (
@@ -138,8 +142,8 @@ const Header: React.FC<HeaderProps> = ({ showThemeToggle = true, showAuthButtons
                 </div>
               ) : (
                 <>
-                  <button className="btn-secondary" onClick={() => navigate('/signin')}>Sign In</button>
-                  <button className="btn-primary" onClick={() => navigate('/signup')}>Get Started</button>
+                  <button className="btn-secondary" onClick={() => navigate('/signin', { state: { from: location.pathname } })}>Sign In</button>
+                  <button className="btn-primary" onClick={() => navigate('/signup', { state: { from: location.pathname } })}>Get Started</button>
                 </>
               )}
             </div>

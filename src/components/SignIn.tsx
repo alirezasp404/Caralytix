@@ -84,15 +84,15 @@ const SignIn: React.FC = () => {
         // Save tokens to localStorage
         if (data.access) localStorage.setItem('token', data.access);
         if (data.refresh) localStorage.setItem('refreshToken', data.refresh);
-        Swal.fire({
-          icon: 'success',
-          title: 'Sign in successful!',
-          text: 'You have successfully signed in.',
-          confirmButtonColor: '#667eea',
-        }).then(() => {
-          const from = location.state?.from?.pathname || '/';
-          navigate(from, { replace: true });
-        });
+                 const from = location.state?.from || '/';
+          // Navigate back to the previous page or home
+          navigate(from, {
+            state: {
+              formData: location.state?.formData,
+              justSignedIn: true
+            }
+          });
+        
       } else {
         let errorMsg = data?.detail || '';
         if (!errorMsg && typeof data === 'object') {

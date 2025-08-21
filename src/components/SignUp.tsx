@@ -116,49 +116,50 @@ const SignUp: React.FC = () => {
         // Store tokens if present in registration response
         if (data.access) localStorage.setItem('token', data.access);
         if (data.refresh) localStorage.setItem('refreshToken', data.refresh);
-        Swal.fire({
-          icon: 'success',
-          title: 'Sign up successful!',
-          text: 'Your account has been created. Signing you in...',
-          confirmButtonColor: '#667eea',
-          timer: 1200,
-          showConfirmButton: false
-        }).then(async () => {
-          // Auto sign in
-          try {
-            const loginResponse = await fetch(`${import.meta.env.VITE_API_HOST || ''}/user/login/`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                email: formData.email,
-                password: formData.password,
-              }),
+        
+        // Auto sign in
+        try {
+          const loginResponse = await fetch(`${import.meta.env.VITE_API_HOST || ''}/user/login/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: formData.email,
+              password: formData.password,
+            }),
+          });
+          
+          const loginData = await loginResponse.json();
+          
+          if (loginResponse.ok) {
+            if (loginData.access) localStorage.setItem('token', loginData.access);
+            if (loginData.refresh) localStorage.setItem('refreshToken', loginData.refresh);
+            const from = location.state?.from || '/';
+            // Navigate back to the previous page or home with the form data and justSignedIn flag
+            navigate(from, {
+              replace: true,
+              state: {
+                formData: location.state?.formData,
+                justSignedIn: true
+              }
             });
-            const loginData = await loginResponse.json();
-            if (loginResponse.ok) {
-              if (loginData.access) localStorage.setItem('token', loginData.access);
-              if (loginData.refresh) localStorage.setItem('refreshToken', loginData.refresh);
-              const from = location.state?.from?.pathname || '/';
-              navigate(from, { replace: true });
-            } else {
-              Swal.fire({
-                icon: 'error',
-                title: 'Auto sign in failed',
-                text: loginData.detail || JSON.stringify(loginData) || 'Please sign in manually.',
-                confirmButtonColor: '#e53e3e',
-              });
-              navigate('/signin', { replace: true });
-            }
-          } catch (err) {
+          } else {
             Swal.fire({
               icon: 'error',
-              title: 'Network error',
-              text: 'Please sign in manually.',
+              title: 'Auto sign in failed',
+              text: loginData.detail || JSON.stringify(loginData) || 'Please sign in manually.',
               confirmButtonColor: '#e53e3e',
             });
             navigate('/signin', { replace: true });
           }
-        });
+        } catch (err) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Network error',
+            text: 'Please sign in manually.',
+            confirmButtonColor: '#e53e3e',
+          });
+          navigate('/signin', { replace: true });
+        }
       } else {
         // Show backend errors from registration
         let errorMsg = data?.detail || '';

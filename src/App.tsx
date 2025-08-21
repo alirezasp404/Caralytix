@@ -5,7 +5,7 @@ import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
 import Contact from './components/Contact'
 import AboutUs from './components/AboutUs'
-import PredictionPage from './components/Prediction'
+import Prediction from './components/Prediction'
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/aboutus" element={<AboutUs />} />
-          <Route path="/prediction" element={<PredictionPage />} />
+          <Route path="/prediction" element={<Prediction />} />
         </Routes>
       </div>
     </Router>

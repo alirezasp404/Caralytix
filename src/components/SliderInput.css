@@ -1,0 +1,29 @@
+.slider-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.slider-label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.slider-input {
+  width: 140px;
+  accent-color: var(--accent-primary);
+  height: 4px;
+  border-radius: 2px;
+  background: var(--bg-secondary);
+}
+.slider-value {
+  min-width: 2.5rem;
+  text-align: right;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+}
