@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import Swal from 'sweetalert2'
 import { Sun, Moon } from 'lucide-react'
 import { getTheme, setTheme, syncThemeWithBody } from '../theme'
 import { Link } from 'react-router-dom'
@@ -6,6 +8,8 @@ import { Car, Eye, EyeOff, Mail, Lock, User } from 'lucide-react'
 import './Auth.css'
 
 const SignUp: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -92,11 +96,95 @@ const SignUp: React.FC = () => {
     setErrors(validationErrors)
     if (Object.keys(validationErrors).length > 0) return
     setIsLoading(true)
-    // TODO: Replace with real sign-up logic
-    setTimeout(() => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_HOST || ''}/user/register/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          password: formData.password,
+        }),
+      })
+      const data = await response.json()
       setIsLoading(false)
-      alert('Sign up functionality would be implemented here!')
-    }, 1000)
+      console.log(response)
+      if (response.ok) {
+        // Store tokens if present in registration response
+        if (data.access) localStorage.setItem('token', data.access);
+        if (data.refresh) localStorage.setItem('refreshToken', data.refresh);
+        Swal.fire({
+          icon: 'success',
+          title: 'Sign up successful!',
+          text: 'Your account has been created. Signing you in...',
+          confirmButtonColor: '#667eea',
+          timer: 1200,
+          showConfirmButton: false
+        }).then(async () => {
+          // Auto sign in
+          try {
+            const loginResponse = await fetch(`${import.meta.env.VITE_API_HOST || ''}/user/login/`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                email: formData.email,
+                password: formData.password,
+              }),
+            });
+            const loginData = await loginResponse.json();
+            if (loginResponse.ok) {
+              if (loginData.access) localStorage.setItem('token', loginData.access);
+              if (loginData.refresh) localStorage.setItem('refreshToken', loginData.refresh);
+              const from = location.state?.from?.pathname || '/';
+              navigate(from, { replace: true });
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Auto sign in failed',
+                text: loginData.detail || JSON.stringify(loginData) || 'Please sign in manually.',
+                confirmButtonColor: '#e53e3e',
+              });
+              navigate('/signin', { replace: true });
+            }
+          } catch (err) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Network error',
+              text: 'Please sign in manually.',
+              confirmButtonColor: '#e53e3e',
+            });
+            navigate('/signin', { replace: true });
+          }
+        });
+      } else {
+        // Show backend errors from registration
+        let errorMsg = data?.detail || '';
+        if (!errorMsg && typeof data === 'object') {
+          errorMsg = Object.entries(data)
+            .map(([key, val]) => `${Array.isArray(val) ? val.join(', ') : val}`)
+            .join('\n');
+        }
+        Swal.fire({
+          icon: 'error',
+          title: 'Sign up failed',
+          text: errorMsg || 'An error occurred. Please try again.',
+          confirmButtonColor: '#e53e3e',
+        });
+        setErrors({ email: errorMsg || 'Registration failed.' })
+      }
+    } catch (error) {
+      setIsLoading(false)
+      Swal.fire({
+        icon: 'error',
+        title: 'Network error',
+        text: 'Please try again.',
+        confirmButtonColor: '#e53e3e',
+      })
+      setErrors({ email: 'Network error. Please try again.' })
+    }
   }
 
   return (

@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
+import Swal from 'sweetalert2'
 import { Sun, Moon } from 'lucide-react'
 import { getTheme, setTheme, syncThemeWithBody } from '../theme'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { Car, Eye, EyeOff, Mail, Lock } from 'lucide-react'
 import './Auth.css'
 
 const SignIn: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -64,11 +67,57 @@ const SignIn: React.FC = () => {
     setErrors(validationErrors)
     if (Object.keys(validationErrors).length > 0) return
     setIsLoading(true)
-    // TODO: Replace with real authentication logic
-    setTimeout(() => {
+    try {
+  const response = await fetch(`${import.meta.env.VITE_API_HOST || ''}/user/login/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      })
+      const data = await response.json()
       setIsLoading(false)
-      alert('Sign in functionality would be implemented here!')
-    }, 1000)
+      if (response.ok) {
+        // Save tokens to localStorage
+        if (data.access) localStorage.setItem('token', data.access);
+        if (data.refresh) localStorage.setItem('refreshToken', data.refresh);
+        Swal.fire({
+          icon: 'success',
+          title: 'Sign in successful!',
+          text: 'You have successfully signed in.',
+          confirmButtonColor: '#667eea',
+        }).then(() => {
+          const from = location.state?.from?.pathname || '/';
+          navigate(from, { replace: true });
+        });
+      } else {
+        let errorMsg = data?.detail || '';
+        if (!errorMsg && typeof data === 'object') {
+          errorMsg = Object.entries(data)
+            .map(([key, val]) => `${Array.isArray(val) ? val.join(', ') : val}`)
+            .join('\n');
+        }
+        Swal.fire({
+          icon: 'error',
+          title: 'Sign in failed',
+          text: errorMsg || 'Invalid credentials.',
+          confirmButtonColor: '#e53e3e',
+        })
+        setErrors({ email: errorMsg || 'Invalid credentials.' })
+      }
+    } catch (error) {
+      setIsLoading(false)
+      Swal.fire({
+        icon: 'error',
+        title: 'Network error',
+        text: 'Please try again.',
+        confirmButtonColor: '#e53e3e',
+      })
+      setErrors({ email: 'Network error. Please try again.' })
+    }
   }
 
   return (

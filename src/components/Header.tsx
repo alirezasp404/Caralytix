@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Car, Sun, Moon, Menu, X } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Car, Sun, Moon, Menu, X, LogOut, User } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { getTheme, setTheme } from '../theme';
 import './Header.css';
@@ -15,6 +15,21 @@ const Header: React.FC<HeaderProps> = ({ showThemeToggle = true, showAuthButtons
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
+  const accountMenuTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const checkLogin = () => setIsLoggedIn(!!localStorage.getItem('token'));
+    window.addEventListener('storage', checkLogin);
+    return () => window.removeEventListener('storage', checkLogin);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    navigate('/signin');
+  };
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -68,8 +83,65 @@ const Header: React.FC<HeaderProps> = ({ showThemeToggle = true, showAuthButtons
           )}
           {showAuthButtons && (
             <div className="nav-buttons">
-              <button className="btn-secondary" onClick={() => navigate('/signin')}>Sign In</button>
-              <button className="btn-primary" onClick={() => navigate('/signup')}>Get Started</button>
+              {isLoggedIn ? (
+                <div
+                  className="account-menu-wrapper"
+                  style={{ position: 'relative', display: 'inline-block' }}
+                  onMouseEnter={() => {
+                    if (accountMenuTimeout.current) clearTimeout(accountMenuTimeout.current);
+                    setShowAccountMenu(true);
+                  }}
+                  onMouseLeave={() => {
+                    accountMenuTimeout.current = setTimeout(() => setShowAccountMenu(false), 180);
+                  }}
+                >
+                  <button
+                    className="btn-secondary account-icon-rounded"
+                    aria-label="Account Menu"
+                    style={{ borderRadius: '50%', padding: 8, width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >
+                    <User size={22} />
+                  </button>
+                  {showAccountMenu && (
+                    <div
+                      className="account-dropdown"
+                      style={{
+                        position: 'absolute',
+                        right: 0,
+                        top: '110%',
+                        background: 'var(--bg-card, #fff)',
+                        borderRadius: '0.5rem',
+                        boxShadow: '0 4px 16px rgba(0,0,0,0.10)',
+                        minWidth: '140px',
+                        zIndex: 1000,
+                        padding: '0.5rem 0',
+                      }}
+                      onMouseEnter={() => {
+                        if (accountMenuTimeout.current) clearTimeout(accountMenuTimeout.current);
+                        setShowAccountMenu(true);
+                      }}
+                      onMouseLeave={() => {
+                        accountMenuTimeout.current = setTimeout(() => setShowAccountMenu(false), 180);
+                      }}
+                    >
+                      <button
+                        className="dropdown-item"
+                        style={{
+                          display: 'flex', alignItems: 'center', gap: 8, width: '100%', background: 'none', border: 'none', padding: '0.5rem 1.2rem', cursor: 'pointer', fontSize: '1rem', color: 'var(--text-primary)'
+                        }}
+                        onClick={() => { setShowAccountMenu(false); handleLogout(); }}
+                      >
+                        <LogOut size={18} /> Log Out
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <>
+                  <button className="btn-secondary" onClick={() => navigate('/signin')}>Sign In</button>
+                  <button className="btn-primary" onClick={() => navigate('/signup')}>Get Started</button>
+                </>
+              )}
             </div>
           )}
           <button className="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
