@@ -84,17 +84,24 @@ const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isL
   const [models, setModels] = useState<ModelType[]>([]);
   const [shouldAutoSubmit, setShouldAutoSubmit] = useState(false);
   
-  // Check if we returned from sign in and should auto submit
+  // Check if we should auto submit after sign in or direct from landing
   useEffect(() => {
-    const state = location.state as { justSignedIn?: boolean; formData?: any } | null;
+    const state = location.state as { justSignedIn?: boolean; autoSubmit?: boolean; formData?: any } | null;
     console.log('Location state:', state); // For debugging
-    if (state?.justSignedIn && formData.name && formData.model) {
-      console.log('Setting should auto-submit'); // For debugging
-      setShouldAutoSubmit(true);
-      // Clear the justSignedIn flag to prevent re-submission
+
+    if (state?.formData) {
+      const token = localStorage.getItem('token');
+      const shouldAutoSubmit = (state.justSignedIn || state.autoSubmit) && token;
+
+      if (shouldAutoSubmit && formData.name && formData.model) {
+        console.log('Setting should auto-submit'); // For debugging
+        setShouldAutoSubmit(true);
+      }
+
+      // Clear the flags to prevent re-submission
       navigate(location.pathname, { 
         replace: true,
-        state: { ...state, justSignedIn: false }
+        state: { ...state, justSignedIn: false, autoSubmit: false }
       });
     }
   }, [location.state]);
@@ -292,7 +299,7 @@ const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isL
               <Switch
                 checked={engineStatus}
                 onChange={handleEngineStatusSwitch}
-                leftLabel="Original (Fabric)"
+                leftLabel="Original"
                 rightLabel="Replaced"
                 id="engine_status"
               />

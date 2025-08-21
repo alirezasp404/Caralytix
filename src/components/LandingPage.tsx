@@ -1,15 +1,145 @@
 import React, { useState, useEffect } from 'react'
 import { Car, TrendingUp, Shield, Users, ArrowRight, Star, DollarSign, Moon, Sun, Menu, X, Zap, BarChart3, Globe } from 'lucide-react'
-import { useNavigate ,Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { getTheme, setTheme } from '../theme'
+import { fetchCarNames, fetchCarModels } from '../api'
+import Select from 'react-select'
 import './LandingPage.css'
 import Footer from './Footer'
 import Header from './Header'
 
+// Custom styles for React Select to support dark mode
+const customSelectStyles = {
+  control: (provided: any, state: { isFocused: boolean }) => ({
+    ...provided,
+    backgroundColor: 'var(--bg-secondary)',
+    borderColor: state.isFocused ? 'var(--accent-primary)' : 'var(--border-color)',
+    color: 'var(--text-primary)',
+    boxShadow: state.isFocused ? '0 0 0 2px rgba(59,130,246,0.10)' : '0 1px 6px rgba(102,126,234,0.08)',
+    borderRadius: '1.5rem',
+    minHeight: '44px',
+  }),
+  menu: (provided: any) => ({
+    ...provided,
+    backgroundColor: 'var(--bg-card)',
+    color: 'var(--text-primary)',
+    borderRadius: '1.2rem',
+    zIndex: 20,
+  }),
+  option: (provided: any, state: { isSelected: boolean; isFocused: boolean }) => ({
+    ...provided,
+    backgroundColor: state.isSelected
+      ? 'var(--accent-primary)'
+      : state.isFocused
+      ? 'rgba(102,126,234,0.08)'
+      : 'var(--bg-card)',
+    color: state.isSelected ? '#fff' : 'var(--text-primary)',
+    borderRadius: '0.8rem',
+    cursor: 'pointer',
+  }),
+  singleValue: (provided: any) => ({
+    ...provided,
+    color: 'var(--text-primary)',
+  }),
+  input: (provided: any) => ({
+    ...provided,
+    color: 'var(--text-primary)',
+  }),
+  dropdownIndicator: (provided: any) => ({
+    ...provided,
+    color: 'var(--accent-primary)',
+  }),
+  indicatorSeparator: (provided: any) => ({
+    ...provided,
+    backgroundColor: 'var(--border-color)',
+  }),
+};
+
+interface FormData {
+  name: string;
+  model: string;
+  mile: string;
+  year: string;
+  gearbox: 'automatic' | 'manual';
+  engine_status: 'هست' | 'نیست';
+  body_health: string;
+}
+
+type BrandType = { name: string };
+type ModelType = { model: string };
+
 const LandingPage: React.FC = () => {
+  const navigate = useNavigate();
   const [isDarkMode, setIsDarkMode] = useState(getTheme() === 'dark')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [brands, setBrands] = useState<BrandType[]>([]);
+  const [models, setModels] = useState<ModelType[]>([]);
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    model: '',
+    mile: '',
+    year: '',
+    gearbox: 'manual',
+    engine_status: 'هست',
+    body_health: '10'
+  });
+
+  // Fetch car brands on mount
+  useEffect(() => {
+    fetchCarNames().then(setBrands).catch(() => setBrands([]));
+  }, []);
+
+  // Fetch car models when brand changes
+  useEffect(() => {
+    if (formData.name) {
+      fetchCarModels(formData.name).then(setModels).catch(() => setModels([]));
+    } else {
+      setModels([]);
+    }
+  }, [formData.name]);
+
+  const handleChange = (e: { target: { name: string; value: any } }) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const handleHeroSubmit = () => {
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      // If not logged in, redirect to sign in with form data
+      navigate('/signin', {
+        state: {
+          from: '/prediction',
+          formData: {
+            ...formData,
+            // Set default values for fields not in hero form
+            gearbox: 'manual',
+            engine_status: 'هست',
+            body_health: '10'
+          },
+          autoSubmit: true
+        }
+      });
+    } else {
+      // If logged in, go directly to prediction with auto-submit
+      navigate('/prediction', {
+        state: {
+          formData: {
+            ...formData,
+            // Set default values for fields not in hero form
+            gearbox: 'manual',
+            engine_status: 'هست',
+            body_health: '10'
+          },
+          autoSubmit: true
+        }
+      });
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,7 +176,6 @@ const LandingPage: React.FC = () => {
     setIsMobileMenuOpen(false)
   }
 
-  const navigate = useNavigate();
   return (
     <div className={`landing-page ${isDarkMode ? 'dark' : 'light'}`}>
      
@@ -108,27 +237,88 @@ const LandingPage: React.FC = () => {
                 </div>
               <div className="prediction-form">
                 <div className="form-group">
-                  <label>Car Model</label>
-                  <input type="text" placeholder="e.g., Toyota Camry 2020" />
+                  <label>Brand</label>
+                  <Select
+                    id="name"
+                    name="name"
+                    options={brands.map(brand => ({
+                      value: brand.name,
+                      label: brand.name
+                    }))}
+                    value={brands.map(brand => ({
+                      value: brand.name,
+                      label: brand.name
+                    })).find(option => option.value === formData.name) || null}
+                    onChange={(selectedOption) => {
+                      const value = selectedOption ? selectedOption.value : '';
+                      handleChange({
+                        target: {
+                          name: 'name',
+                          value: value,
+                        },
+                      });
+                    }}
+                    placeholder="Select brand"
+                    styles={customSelectStyles}
+                  />
                 </div>
                 <div className="form-group">
-                  <label>Mileage</label>
-                  <input type="number" placeholder="50,000" />
+                  <label>Model</label>
+                  <Select
+                    id="model"
+                    name="model"
+                    options={models.map(model => ({
+                      value: model.model,
+                      label: model.model
+                    }))}
+                    value={models.map(model => ({
+                      value: model.model,
+                      label: model.model
+                    })).find(option => option.value === formData.model) || null}
+                    onChange={(selectedOption) => {
+                      const value = selectedOption ? selectedOption.value : '';
+                      handleChange({
+                        target: {
+                          name: 'model',
+                          value: value,
+                        },
+                      });
+                    }}
+                    placeholder="Select model"
+                    isDisabled={!formData.name}
+                    styles={customSelectStyles}
+                  />
                 </div>
                 <div className="form-group">
                   <label>Year</label>
-                  <input type="number" placeholder="2020" />
+                  <input
+                    type="number"
+                    name="year"
+                    value={formData.year}
+                    onChange={handleChange}
+                    placeholder="e.g. 2020"
+                  />
                 </div>
-                <button className="btn-primary btn-full">
+                <div className="form-group">
+                  <label>Mileage (km)</label>
+                  <input
+                    type="number"
+                    name="mile"
+                    value={formData.mile}
+                    onChange={handleChange}
+                    placeholder="e.g. 50000"
+                  />
+                </div>
+                <button 
+                  className="btn-primary btn-full" 
+                  onClick={handleHeroSubmit}
+                  disabled={!formData.name || !formData.model || !formData.year || !formData.mile}>
                   <Zap className="btn-icon" />
                   Predict Price
                 </button>
               </div>
               <div className="card-footer">
-                <div className="prediction-preview">
-                  <span className="preview-label">Estimated Price:</span>
-                  <span className="preview-value">$25,000 - $28,000</span>
-                </div>
+
               </div>
             </div>
             

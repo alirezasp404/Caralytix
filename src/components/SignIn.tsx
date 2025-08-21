@@ -84,14 +84,19 @@ const SignIn: React.FC = () => {
         // Save tokens to localStorage
         if (data.access) localStorage.setItem('token', data.access);
         if (data.refresh) localStorage.setItem('refreshToken', data.refresh);
-                 const from = location.state?.from || '/';
-          // Navigate back to the previous page or home
-          navigate(from, {
-            state: {
-              formData: location.state?.formData,
-              justSignedIn: true
-            }
-          });
+        
+        const from = location.state?.from || '/';
+        const previousFormData = location.state?.formData;
+        const shouldAutoSubmit = location.state?.autoSubmit;
+        
+        // Navigate back to the previous page with appropriate flags
+        navigate(from, {
+          state: {
+            formData: previousFormData,
+            justSignedIn: true,
+            autoSubmit: shouldAutoSubmit // Preserve autoSubmit flag from landing page
+          }
+        });
         
       } else {
         let errorMsg = data?.detail || '';
