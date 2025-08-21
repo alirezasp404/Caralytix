@@ -214,7 +214,7 @@ const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isL
 
   <form onSubmit={handleSubmit} className="prediction-form" style={{gap: '1rem'}}>
           <div className="form-group">
-            <label htmlFor="name">Brand *</label>
+            <label htmlFor="name">Name *</label>
 <Select
         id="name"
         name="name"
@@ -229,7 +229,7 @@ const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isL
             },
           });
         }}
-        placeholder="Select brand"
+        placeholder="Select name"
         required
   styles={customSelectStyles}
       />
@@ -256,7 +256,7 @@ const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isL
       />
           </div>
           <div className="form-row">
-            <div className="form-group">
+            <div className="form-group input">
               <label htmlFor="mile">Mileage (km) *</label>
               <input
                 type="number"
@@ -268,7 +268,7 @@ const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isL
                 required
               />
             </div>
-            <div className="form-group">
+            <div className="form-group input">
               <label htmlFor="year">Year *</label>
               <input
                 type="number"

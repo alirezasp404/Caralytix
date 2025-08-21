@@ -237,7 +237,7 @@ const LandingPage: React.FC = () => {
                 </div>
               <div className="prediction-form">
                 <div className="form-group">
-                  <label>Brand</label>
+                  <label>Name</label>
                   <Select
                     id="name"
                     name="name"
@@ -258,7 +258,7 @@ const LandingPage: React.FC = () => {
                         },
                       });
                     }}
-                    placeholder="Select brand"
+                    placeholder="Select name"
                     styles={customSelectStyles}
                   />
                 </div>

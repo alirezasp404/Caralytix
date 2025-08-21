@@ -1,3 +1,15 @@
+// Fetch car recommendations based on price
+export async function fetchCarRecommendations(price: number) {
+  const res = await fetch(`${import.meta.env.VITE_API_HOST || ''}/user/suggest-car/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ price }),
+  });
+  if (!res.ok) throw new Error('Failed to fetch car recommendations');
+  return res.json();
+}
 // Predict car price
 export async function predictPrice(payload: {
   name: string;
