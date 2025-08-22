@@ -1,12 +1,13 @@
 .recommendations-card.improved-recommendations {
-	max-width: 540px;
-	margin: 2rem auto;
+	max-width: 55vw;
+	margin: 0rem auto;
+	border: 1px solid var(--border-color) !important;
 	background: var(--bg-card, #ffffff);
 	border-radius: 1.5rem;
-	box-shadow: 0 8px 32px -4px rgba(60,60,100,0.15);
-	padding: 2rem 1.5rem 1.5rem 1.5rem;
+	box-shadow: var(--shadow-heavy) !important;
+	padding: 1.5rem 1.5rem 1.5rem 1.5rem;
 	transition: all 0.3s ease;
-	border: 1px solid rgba(226, 232, 240, 0.8);
+	
 }
 .price-input::-webkit-outer-spin-button,
 .price-input::-webkit-inner-spin-button {
@@ -50,6 +51,7 @@
 		color: #7ab8eb;
 		background: rgba(122, 184, 235, 0.1);
 		text-shadow: 0 0 20px rgba(122, 184, 235, 0.2);
+		margin: 0.5rem;
 	}
 }
 
@@ -341,6 +343,7 @@
 
 .recommendations-content {
 	min-height: 120px;
+
 }
 
 .loading-state {
@@ -365,6 +368,7 @@
 	flex-direction: column;
 	gap: 1.1rem;
     padding: 1rem;
+	max-height: 58vh;
 }
 
 .recommendation-item-card {
@@ -379,7 +383,7 @@
 .rec-title {
 	font-size: 1.13rem;
 	font-weight: 600;
-	color: #333;
+	color: var(--text-primary);
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
@@ -393,12 +397,12 @@
 	display: flex;
 	gap: 1.5rem;
 	font-size: 1.01rem;
-	color: #444;
+	color: var(--text-secondary);
 }
 .rec-price {
 	margin-top: 0.3rem;
 	font-size: 1.08rem;
-	color: #222;
+	color: var(--text-primary);
 	display: flex;
 	gap: 0.5rem;
 	align-items: center;
@@ -417,10 +421,17 @@
 	text-align: center;
 }
 .placeholder-content {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 200px;
 	text-align: center;
-	color: #888;
-	margin: 2.5rem 0 1.5rem 0;
+	color: #666;
+	margin: 0;
 }
 .placeholder-text {
-	font-size: 1.08rem;
+	font-size: 1.1rem;
+	max-width: 80%;
+	margin: 0 auto;
+	line-height: 1.6;
 }

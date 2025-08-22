@@ -270,6 +270,7 @@ body.dark .btn-primary:hover {
   display: flex;
   gap: 2rem;
   align-items: center;
+  
 }
 
 .nav-links a {
@@ -284,6 +285,10 @@ body.dark .btn-primary:hover {
 .nav-links a:hover {
   color: var(--accent-primary);
   transform: translateY(-2px);
+}
+ a:focus  {
+  outline: none;
+  box-shadow: none;
 }
 
 .nav-links a::after {

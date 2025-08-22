@@ -75,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({ showThemeToggle = true, showAuthButtons
           </Link>
         </div>
         <div className={`nav-links ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
-          <Link to="/prediction">Prediction</Link>
+          <Link to="/prediction">Cara</Link>
           <Link to="/contact">Contact</Link>
           <Link to="/aboutus">About Us</Link>
         </div>

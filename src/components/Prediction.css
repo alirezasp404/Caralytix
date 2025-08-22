@@ -194,7 +194,7 @@
   border: 1px solid var(--border-color);
   border-radius: 1.5rem;
   padding: 3rem;
-  box-shadow: var(--shadow-medium);
+  box-shadow: var(--shadow-heavy);
   transition: all 0.3s ease;
 }
 
@@ -231,7 +231,7 @@
 
 .form-group input,
 .form-group select {
-  padding: 1rem;
+  padding: 0.5rem;
   border: 2px solid var(--border-color);
   border-radius: 0.75rem;
   font-size: 1rem;
@@ -356,4 +356,17 @@
     grid-template-columns: 1fr;
     gap: 2rem;
   }
+}
+.tabs-capsule button:focus {
+  outline: none;
+  box-shadow: none;
+
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
 }

@@ -5,58 +5,49 @@ import Footer from './Footer';
 import Header from './Header';
 import PredictPrice from './PredictPrice';
 import Recommendations from './Recommendations';
-import ChatBot from './ChatBot';
 import { getTheme, setTheme } from '../theme'
+import CaraExplorer from './CaraExplorer';
 
 const Prediction: React.FC = () => {
-  const location = useLocation() as { state?: { formData?: any } };
+  const location = useLocation() as { 
+    state?: { 
+      formData?: any; 
+      activeTab?: number;
+      justSignedIn?: boolean;
+      autoSubmit?: boolean;
+    } 
+  };
 
-  // Initialize formData from navigation state if it exists
+  // Initialize formData and active tab from navigation state if it exists
   const [formData, setFormData] = useState<any>(() => {
     return location.state?.formData || {};
   });
   const [predictionResult, setPredictionResult] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = React.useState(() => {
+    return location.state?.activeTab ?? 0;
+  });
 
-  // Clear navigation state after restoring form data
+  // Handle auto-submit and state restoration
   useEffect(() => {
-    if (location.state?.formData) {
+    if (location.state?.justSignedIn) {
+      // Let the child components handle their auto-submit first
+      setTimeout(() => {
+        // Clear navigation state after components have processed it
+        window.history.replaceState({}, document.title);
+      }, 0);
+    } else if (location.state?.formData || location.state?.activeTab !== undefined) {
+      // Clear non-signin related state immediately
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
-  const [recommendations, setRecommendations] = useState<string[]>([]);
-  const [chatMessages, setChatMessages] = useState<{ sender: string; text: string }[]>([]);
-  const [activeTab, setActiveTab] = React.useState(0);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prev: any) => ({ ...prev, [name]: value }));
   };
 
-  const handlePredict = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setPredictionResult(null);
-    setTimeout(() => {
-      setIsLoading(false);
-      setPredictionResult(25000 + Math.floor(Math.random() * 10000));
-      setRecommendations([
-        'Toyota Camry 2020 - $22,000',
-        'Honda Accord 2019 - $21,500',
-        'Mazda 6 2021 - $23,000',
-      ]);
-    }, 2000);
-  };
 
-  const handleSendMessage = (message: string) => {
-    setChatMessages((prev) => [...prev, { sender: 'user', text: message }]);
-    setTimeout(() => {
-      setChatMessages((prev) => [
-        ...prev,
-        { sender: 'bot', text: 'This is a mock response from Caralytix ChatBot.' },
-      ]);
-    }, 1000);
-  };
   const [theme, setThemeState] = useState<'dark' | 'light'>(getTheme())
   useEffect(() => {
     const applyTheme = (themeValue: 'dark' | 'light') => {
@@ -82,21 +73,21 @@ const Prediction: React.FC = () => {
             onClick={() => setActiveTab(0)}
             aria-label="Predict Price"
           >
-            Predict Price
+            CaraPredict 
           </button>
           <button
             className={`capsule-btn${activeTab === 1 ? ' active' : ''}`}
             onClick={() => setActiveTab(1)}
             aria-label="Recommendations"
           >
-            Recommendations
+            CaraRecom
           </button>
           <button
             className={`capsule-btn${activeTab === 2 ? ' active' : ''}`}
             onClick={() => setActiveTab(2)}
-            aria-label="Chatbot"
+            aria-label="CaraExplorer"
           >
-            Chatbot
+            CaraExplorer
           </button>
         </div>
       </div>
@@ -114,16 +105,11 @@ const Prediction: React.FC = () => {
           )}
           {activeTab === 1 && (
             <Recommendations
-              recommendations={recommendations}
               isLoading={isLoading}
             />
           )}
           {activeTab === 2 && (
-            <ChatBot
-              chatMessages={chatMessages}
-              isLoading={isLoading}
-              onSendMessage={handleSendMessage}
-            />
+            <CaraExplorer />
           )}
         </div>
       </main>

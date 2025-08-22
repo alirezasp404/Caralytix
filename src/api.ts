@@ -42,3 +42,19 @@ export async function fetchCarModels(name: string) {
   if (!res.ok) throw new Error('Failed to fetch car models');
   return res.json();
 }
+
+// Interface for car search result
+export interface CarSearchResult {
+  name: string;
+  image: string;
+  price: number;
+  source: string;
+  link: string;
+}
+
+// Search for cars across different websites
+export async function searchCars(searchTerm: string): Promise<{ data: CarSearchResult[] }> {
+  const res = await fetch(`${import.meta.env.VITE_API_HOST || ''}/user/search?search=${encodeURIComponent(searchTerm)}`);
+  if (!res.ok) throw new Error('Failed to search cars');
+  return res.json();
+}

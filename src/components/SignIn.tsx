@@ -88,13 +88,15 @@ const SignIn: React.FC = () => {
         const from = location.state?.from || '/';
         const previousFormData = location.state?.formData;
         const shouldAutoSubmit = location.state?.autoSubmit;
+        const activeTab = location.state?.activeTab;
         
         // Navigate back to the previous page with appropriate flags
         navigate(from, {
           state: {
             formData: previousFormData,
             justSignedIn: true,
-            autoSubmit: shouldAutoSubmit // Preserve autoSubmit flag from landing page
+            autoSubmit: shouldAutoSubmit, // Preserve autoSubmit flag from landing page
+            activeTab: activeTab // Preserve the active tab state
           }
         });
         
@@ -200,7 +202,7 @@ const SignIn: React.FC = () => {
           </div>
 
           <button type="submit" className="auth-button" disabled={isLoading}>
-            {isLoading ? 'Signing In...' : 'Sign In'}
+            {isLoading ? <Car className="spin" size={20} /> : 'Sign In'}
           </button>
         </form>
 

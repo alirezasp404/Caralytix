@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { Send, DollarSign, Loader2 } from 'lucide-react';
+import { Send, DollarSign, Car } from 'lucide-react';
 import { fetchCarNames, fetchCarModels, predictPrice } from '../api';
 import Switch from './Switch';
 import SliderInput from './SliderInput';
 import './Switch.css';
 import './SliderInput.css';
 import Select from 'react-select';
+import CarLoader from './CarLoader';
 
 // Custom styles for React Select to support dark mode
 const customSelectStyles = {
@@ -56,6 +57,23 @@ const customSelectStyles = {
   }),
 };
 
+// Helper function to convert between Solar and Gregorian years
+const convertYear = (year: number, fromGregorian: boolean): number => {
+  if (fromGregorian) {
+    return year - 621; // Convert from Gregorian to Solar
+  } else {
+    return year + 621; // Convert from Solar to Gregorian
+  }
+};
+
+const validateYear = (year: number, isGregorian: boolean): boolean => {
+  if (isGregorian) {
+    return year >= 1900 && year <= new Date().getFullYear();
+  } else {
+    return year >= 1300 && year <= (new Date().getFullYear() - 621);
+  }
+};
+
 interface FormData {
   name: string;
   model: string;
@@ -64,6 +82,7 @@ interface FormData {
   gearbox: 'automatic' | 'manual';
   engine_status: 'هست' | 'نیست';
   body_health: string;
+  isGregorianYear?: boolean;
 }
 
 interface PredictPriceProps {
@@ -75,6 +94,11 @@ interface PredictPriceProps {
   setIsLoading: (value: boolean) => void;
 }
 
+// Helper to convert toman to rial
+function tomanToRial(toman: number) {
+  return toman * 10;
+}
+
 const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isLoading, predictionResult, setPredictionResult, setIsLoading }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -83,6 +107,7 @@ const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isL
   const [brands, setBrands] = useState<BrandType[]>([]);
   const [models, setModels] = useState<ModelType[]>([]);
   const [shouldAutoSubmit, setShouldAutoSubmit] = useState(false);
+  const [isGregorianYear, setIsGregorianYear] = useState(false);
   
   // Check if we should auto submit after sign in or direct from landing
   useEffect(() => {
@@ -142,6 +167,8 @@ const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isL
   };
 
   // Handle form submit and send to API
+  const [predictedPriceUSD, setPredictedPriceUSD] = useState<number | null>(null);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -163,7 +190,8 @@ const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isL
           navigate('/signin', { 
             state: { 
               from: '/prediction',
-              formData: formData 
+              formData: formData,
+              activeTab: 0 // Set to PredictPrice tab index
             }
           });
         }
@@ -174,16 +202,33 @@ const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isL
     setIsLoading(true);
     setPredictionResult(null);
     try {
+      const yearNum = Number(formData.year);
+      if (!validateYear(yearNum, isGregorianYear)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalid Year',
+          text: isGregorianYear 
+            ? 'Please enter a valid Gregorian year (1900-present)'
+            : 'Please enter a valid Solar year (1300-present)',
+          confirmButtonColor: '#667eea'
+        });
+        return;
+      }
+
+      // Convert to Solar year if input is Gregorian
+      const solarYear = isGregorianYear ? convertYear(yearNum, true) : yearNum;
+
       const data = await predictPrice({
         name: formData.name,
         model: formData.model,
         gearbox: formData.gearbox,
-        year: Number(formData.year),
+        year: solarYear,
         mile: Number(formData.mile),
         body_health: Number(formData.body_health),
         engine_status: formData.engine_status,
       });
-      setPredictionResult(data.predicted_price || null);
+  setPredictionResult(data.predicted_price || null);
+  setPredictedPriceUSD(data.price_usd || null);
     } catch (err) {
       setPredictionResult(null);
       // Optionally show error to user
@@ -255,7 +300,35 @@ const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isL
         styles={customSelectStyles}
       />
           </div>
-          <div className="form-row">
+          <div className="form-row year-row">
+            <div className="form-group input">
+              <label htmlFor="year">Year *</label>
+              <input
+                type="number"
+                id="year"
+                name="year"
+                className="year-input"
+                value={formData.year || ''}
+                onChange={handleChange}
+                placeholder={isGregorianYear ? "e.g. 2020" : "e.g. 1400"}
+                min={isGregorianYear ? "1900" : "1300"}
+                max={isGregorianYear ? new Date().getFullYear() : (new Date().getFullYear() - 621)}
+                required
+              />
+            </div>
+            <div className="form-group calendar-switch">
+              <label>Calendar Type</label>
+              <Switch
+                checked={isGregorianYear}
+                onChange={(checked) => setIsGregorianYear(checked)}
+                leftLabel="Solar"
+                rightLabel="Gregorian"
+                id="calendar_type"
+              />
+            </div>
+          </div>
+
+          <div className="form-row inputs-row">
             <div className="form-group input">
               <label htmlFor="mile">Mileage (km) *</label>
               <input
@@ -268,22 +341,6 @@ const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isL
                 required
               />
             </div>
-            <div className="form-group input">
-              <label htmlFor="year">Year *</label>
-              <input
-                type="number"
-                id="year"
-                name="year"
-                value={formData.year || ''}
-                onChange={handleChange}
-                placeholder="e.g. 2020"
-                min="1900"
-                max={new Date().getFullYear()}
-                required
-              />
-            </div>
-          </div>
-          <div className="form-row">
             <div className="form-group">
               <label htmlFor="gearbox">Gearbox *</label>
               <Switch
@@ -292,6 +349,20 @@ const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isL
                 leftLabel="Manual"
                 rightLabel="Automatic"
                 id="gearbox"
+              />
+            </div>
+          </div>
+
+          <div className="form-row controls-row">
+            <div className="form-group" style={{width: '100%'}}>
+              <SliderInput
+                value={Number(formData.body_health) || 1}
+                min={1}
+                max={10}
+                step={0.1}
+                onChange={val => handleChange({ target: { name: 'body_health', value: val } })}
+                label="Body Health (1-10) *"
+                id="body_health"
               />
             </div>
             <div className="form-group">
@@ -305,23 +376,10 @@ const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isL
               />
             </div>
           </div>
-          <div className="form-row">
-            <div className="form-group" style={{width: '100%'}}>
-              <SliderInput
-                value={Number(formData.body_health) || 1}
-                min={1}
-                max={10}
-                step={0.1}
-                onChange={val => handleChange({ target: { name: 'body_health', value: val } })}
-                label="Body Health (1-10) *"
-                id="body_health"
-              />
-            </div>
-          </div>
           <button type="submit" className="predict-button" disabled={isLoading}>
             {isLoading ? (
               <>
-                <Loader2 size={20} className="animate-spin" />
+                <Car size={20} className="spin" />
                 Predicting...
               </>
             ) : (
@@ -339,7 +397,7 @@ const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isL
         <div className="results-content">
           {isLoading ? (
             <div className="loading-state">
-              <Loader2 size={48} className="animate-spin text-accent-primary" />
+              <CarLoader />
               <p className="loading-text">Calculating the best price for you...</p>
             </div>
           ) : predictionResult !== null ? (
@@ -347,7 +405,10 @@ const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isL
               <div className="price-icon">
                 <DollarSign size={48} />
               </div>
-              <span className="price-value">${predictionResult.toLocaleString()}</span>
+              <div className="price-value" style={{fontWeight:700}}>{tomanToRial(predictionResult).toLocaleString()} Rial</div>
+              {predictedPriceUSD !== null && (
+                <div className="price-value" style={{color:'#38a169',fontWeight:700,marginTop:'0.5rem'}}>${predictedPriceUSD.toLocaleString()} USD</div>
+              )}
               <p className="price-label">Based on current market data.</p>
             </div>
           ) : (
