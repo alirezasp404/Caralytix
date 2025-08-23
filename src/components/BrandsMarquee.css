@@ -1,0 +1,213 @@
+.brands-marquee-container {
+  width: 100%;
+  overflow: hidden;
+  background: var(--bg-secondary);
+  padding: 3rem 0;
+  position: relative;
+  perspective: 1000px;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 15%,
+    black 85%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 15%,
+    black 85%,
+    transparent
+  );
+}
+
+.brands-track {
+  margin: 2rem 0;
+  position: relative;
+  transform: rotateX(5deg);
+  transform-style: preserve-3d;
+}
+
+.brands-track.reverse {
+  transform: rotateX(-5deg);
+}
+
+.brands-track.reverse .brands-marquee {
+  animation-direction: reverse;
+}
+
+.brands-marquee {
+  display: flex;
+  animation: scroll 40s linear infinite;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.brands-marquee.paused {
+  animation-play-state: paused;
+}
+
+.brand-item {
+  --brand-color: var(--accent-primary);
+  padding: 1rem 2.5rem;
+  margin: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: var(--text-primary);
+  text-transform: capitalize;
+  font-weight: 500;
+  min-width: max-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: scale(0.95);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  opacity: 0.7;
+  animation: fadeInOut 0.5s ease-in-out;
+  backdrop-filter: blur(8px);
+}
+
+/* Light mode styles */
+:root[data-theme="light"] .brand-item {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    0 1px 4px rgba(0, 0, 0, 0.02);
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.7; }
+}
+
+.brand-item.active {
+  opacity: 1;
+}
+
+.brand-item:hover {
+  transform: translateY(-5px) scale(1.05);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--brand-color);
+  opacity: 1;
+  z-index: 10;
+}
+
+/* Light mode hover */
+:root[data-theme="light"] .brand-item:hover {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: var(--brand-color);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.06),
+    0 2px 8px rgba(var(--accent-primary-rgb), 0.1);
+}
+
+.brand-name {
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  padding: 0.25rem 0;
+  color: var(--text-primary);
+}
+
+.brand-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: var(--brand-color);
+  opacity: 0;
+  filter: blur(20px);
+  transform: translate(-50%, -50%) scale(0.8);
+  transition: all 0.4s ease;
+  pointer-events: none;
+}
+
+.brand-item:hover .brand-glow {
+  opacity: 0.15;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+:root[data-theme="light"] .brand-item:hover .brand-glow {
+  opacity: 0.1;
+  mix-blend-mode: multiply;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Add side fade effects and reflection */
+.brands-marquee-container::before,
+.brands-marquee-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 200px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.brands-marquee-container::before {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    var(--bg-secondary),
+    transparent
+  );
+  opacity: 0.95;
+}
+
+.brands-marquee-container::after {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    var(--bg-secondary),
+    transparent
+  );
+  opacity: 0.95;
+}
+
+/* Light mode gradients */
+:root[data-theme="light"] .brands-marquee-container::before {
+  background: linear-gradient(
+    to right,
+    var(--bg-secondary),
+    rgba(var(--bg-secondary-rgb), 0.5) 65%,
+    transparent
+  );
+}
+
+:root[data-theme="light"] .brands-marquee-container::after {
+  background: linear-gradient(
+    to left,
+    var(--bg-secondary),
+    rgba(var(--bg-secondary-rgb), 0.5) 65%,
+    transparent
+  );
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .brands-track {
+    transform: none !important;
+  }
+  
+  .brand-item {
+    padding: 0.75rem 1.5rem;
+  }
+  
+  .brand-icon {
+    display: none;
+  }
+}

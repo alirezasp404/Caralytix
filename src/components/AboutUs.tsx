@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getTheme, setTheme } from '../theme';
-import { Car, Target, Users, Sparkles } from 'lucide-react';
+import { Car, Target, Users, Sparkles, Github } from 'lucide-react';
 import './AboutUs.css';
 import Footer from './Footer';
 import Header from './Header';
@@ -9,20 +9,24 @@ import Header from './Header';
 interface TeamMember {
   name: string;
   image: string;
+  github: string;
 }
 
 const teamMembers: TeamMember[] = [
   {
     name: 'Reza Ebadi',
-    image: 'https://placehold.co/150x150/667eea/ffffff?text=JD',
+    image: 'https://placehold.co/150x150/667eea/ffffff?text=RE',
+    github: 'https://github.com/rezaebadi',
   },
   {
     name: 'Mohammad Ehsan Moslemi',
-    image: 'https://placehold.co/150x150/764ba2/ffffff?text=JS',
+    image: 'https://placehold.co/150x150/764ba2/ffffff?text=EM',
+    github: 'https://github.com/Ehsanmelm',
   },
   {
     name: 'Alireza SadeghiPour',
-    image: 'https://placehold.co/150x150/3b82f6/ffffff?text=EW',
+    image: 'https://placehold.co/150x150/667eea/ffffff?text=AS',
+    github: 'https://github.com/alirezasp404',
   }
 ];
 
@@ -95,6 +99,15 @@ const AboutUs: React.FC = () => {
                   <img src={member.image} alt={member.name} />
                 </div>
                 <h3>{member.name}</h3>
+                <a 
+                  href={member.github} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="github-link"
+                  aria-label={`Visit ${member.name}'s GitHub profile`}
+                >
+                  <Github size={20} />
+                </a>
               </div>
             ))}
           </div>
@@ -107,7 +120,7 @@ const AboutUs: React.FC = () => {
           <div className="cta-content">
             <h2>Ready to Accelerate Your Business?</h2>
             <p>Join the countless companies already using Caralytix to drive innovation and efficiency.</p>
-            <Link to="/contact" className="cta-button cta-button-large">
+            <Link to="/prediction" className="cta-button cta-button-large">
               <Sparkles size={20} />
               Get Started Now
             </Link>

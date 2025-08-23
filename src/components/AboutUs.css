@@ -140,6 +140,25 @@
   color: var(--text-secondary);
 }
 
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  margin-top: 0.5rem;
+}
+
+.github-link:hover {
+  color: var(--accent-primary);
+  background: var(--bg-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-light);
+}
+
 /* CTA Section */
 .about-cta {
   background: var(--gradient-secondary);

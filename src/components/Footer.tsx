@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
             </div>
             <div className="footer-section">
               <h4>Product</h4>
-              <a href="#features">Features</a>
+             <Link to="/prediction">Features</Link>
               <a href="#api">API</a>
               <a href="#integrations">Integrations</a>
             </div>
@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
               <h4>Support</h4>
               <a href="#help">Help Center</a>
               <a href="#docs">Documentation</a>
-              <a href="#status">Status</a>
+              <a href="#faq">FAQ</a>
             </div>
           </div>
           <div className="footer-bottom">

@@ -156,7 +156,7 @@ const Contact: React.FC = () => {
                 </div>
                 <h3>Email Us</h3>
                 <p>Get in touch via email</p>
-                <a href="mailto:hello@caralytix.com">hello@caralytix.com</a>
+                <a href="mailto:info@caralytix.com">info@caralytix.com</a>
               </div>
               <div className="contact-card">
                 <div className="contact-icon">
@@ -164,18 +164,16 @@ const Contact: React.FC = () => {
                 </div>
                 <h3>Call Us</h3>
                 <p>Speak with our team</p>
-                <a href="tel:+1-555-123-4567">+1 (555) 123-4567</a>
+                <a href="tel:021">021</a>
               </div>
               <div className="contact-card">
                 <div className="contact-icon">
                   <MapPin />
                 </div>
                 <h3>Visit Us</h3>
-                <p>Our headquarters</p>
                 <address>
-                  123 Innovation Drive<br />
-                  Tech Valley, CA 94000<br />
-                  United States
+                  Tehran<br />
+                  Iran
                 </address>
               </div>
               <div className="contact-card">
@@ -199,12 +197,6 @@ const Contact: React.FC = () => {
                   Schedule Demo
                 </button>
               </div>
-            </div>
-            {/* FAQ Link */}
-            <div className="faq-section">
-              <h3>Frequently Asked Questions</h3>
-              <p>Find answers to common questions about Caralytix features and implementation.</p>
-              <Link to="/faq" className="faq-link">Browse FAQ →</Link>
             </div>
           </div>
         </div>
