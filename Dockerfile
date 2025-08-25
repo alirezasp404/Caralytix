@@ -10,7 +10,7 @@ RUN npm install -g serve
 
 COPY . .
 
-RUN npm run build
+RUN npm ci --omit=dev   
 
 EXPOSE 3000
 
