@@ -45,7 +45,7 @@ border: 1px solid rgba(226, 232, 240, 0.9);
 
 .search-results {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(18vw, 1fr));
   gap: 1.5rem;
   margin-top: 1.5rem;
   max-height: 58vh;
@@ -117,4 +117,15 @@ border: 1px solid rgba(226, 232, 240, 0.9);
 
 .car-info{
     position: relative;
+}
+.explorer-card {
+	max-width: 100vw;
+	margin: 0 auto;
+	border: 1px solid var(--border-color) !important;
+	background: var(--bg-card, #ffffff);
+	border-radius: 1.5rem;
+	box-shadow: var(--shadow-heavy) !important;
+	padding: 1.5rem 1.5rem 1.5rem 1.5rem;
+	transition: all 0.3s ease;
+	
 }

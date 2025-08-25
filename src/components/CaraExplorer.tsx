@@ -90,7 +90,7 @@ const CaraExplorer: React.FC<CaraExplorerProps> = () => {
   };
 
   return (
-    <div className="recommendations-card improved-recommendations">
+    <div className="explorer-card">
       <h2 className="card-title">
         <Car size={28} className="icon-accent" />
         <span>Car Market Explorer</span>
@@ -134,7 +134,7 @@ const CaraExplorer: React.FC<CaraExplorerProps> = () => {
                   )}
                   {car.source === 'hamrah-mechanic' && (
                     <img 
-                      src="https://www.hamrah-mechanic.com/_next/static/media/new-logo.25cc4dfa.svg" 
+                      src="https://www.hamrah-mechanic.com/_next/static/media/hm-text.139e570a.svg" 
                       alt="Hamrah Mechanic" 
                       className="image-source-logo"
                     />

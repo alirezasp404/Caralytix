@@ -85,6 +85,12 @@ interface FormData {
   isGregorianYear?: boolean;
 }
 
+const defaultFormValues = {
+  gearbox: 'manual' as const,
+  engine_status: 'نیست' as const,
+  body_health: '4.5',
+};
+
 interface PredictPriceProps {
   formData: FormData;
   handleChange: (e: { target: { name: string; value: any } }) => void;
@@ -131,6 +137,13 @@ const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isL
     }
   }, [location.state]);
   const [engineStatus, setEngineStatus] = useState(formData.engine_status === 'هست' ? true : false);
+
+  // Initialize default values
+  useEffect(() => {
+    handleChange({ target: { name: 'gearbox', value: formData.gearbox || defaultFormValues.gearbox }});
+    handleChange({ target: { name: 'engine_status', value: formData.engine_status || defaultFormValues.engine_status }});
+    handleChange({ target: { name: 'body_health', value: formData.body_health || defaultFormValues.body_health }});
+  }, []);
 
   useEffect(() => {
     fetchCarNames().then(setBrands).catch(() => setBrands([]));
@@ -356,12 +369,12 @@ const PredictPrice: React.FC<PredictPriceProps> = ({ formData, handleChange, isL
           <div className="form-row controls-row">
             <div className="form-group" style={{width: '100%'}}>
               <SliderInput
-                value={Number(formData.body_health) || 1}
+                value={Number(formData.body_health) || 4.5}
                 min={1}
-                max={10}
+                max={5}
                 step={0.1}
                 onChange={val => handleChange({ target: { name: 'body_health', value: val } })}
-                label="Body Health (1-10) *"
+                label="Body Health (1-5) *"
                 id="body_health"
               />
             </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Car, TrendingUp, Shield, Users, ArrowRight, Star, DollarSign, Moon, Sun, Menu, X, Zap, BarChart3, Globe } from 'lucide-react'
 import { useNavigate, Link } from 'react-router-dom'
+import Swal from 'sweetalert2'
 import { getTheme, setTheme } from '../theme'
 import { fetchCarNames, fetchCarModels } from '../api'
 import Select from 'react-select'
@@ -215,18 +216,31 @@ const LandingPage: React.FC = () => {
     const token = localStorage.getItem('token');
     
     if (!token) {
-      // If not logged in, redirect to sign in with form data
-      navigate('/signin', {
-        state: {
-          from: '/prediction',
-          formData: {
-            ...formData,
-            // Set default values for fields not in hero form
-            gearbox: 'manual',
-            engine_status: 'هست',
-            body_health: '10'
-          },
-          autoSubmit: true
+      // Show login required message like in PredictPrice component
+      Swal.fire({
+        icon: 'info',
+        title: 'Login Required',
+        text: 'Please sign in to get your car price prediction.',
+        confirmButtonColor: '#667eea',
+        showCancelButton: true,
+        cancelButtonText: 'Cancel',
+        confirmButtonText: 'Sign In'
+      }).then((result: { isConfirmed: boolean }) => {
+        if (result.isConfirmed) {
+          // If user confirms, redirect to sign in with form data
+          navigate('/signin', {
+            state: {
+              from: '/prediction',
+              formData: {
+                ...formData,
+                // Set default values for fields not in hero form
+                gearbox: 'manual',
+                engine_status: 'هست',
+                body_health: '10'
+              },
+              autoSubmit: true
+            }
+          });
         }
       });
     } else {
@@ -600,7 +614,7 @@ const LandingPage: React.FC = () => {
               <div className="testimonial-author">
                 <div className="author-avatar">JD</div>
                 <div className="author-info">
-                  <h4>John Doe</h4>
+                  <h4>Reza Karimi</h4>
                   <span>Car Dealer</span>
                 </div>
               </div>
@@ -617,7 +631,7 @@ const LandingPage: React.FC = () => {
               <div className="testimonial-author">
                 <div className="author-avatar">JS</div>
                 <div className="author-info">
-                  <h4>Jane Smith</h4>
+                  <h4>Mina Fathi</h4>
                   <span>Individual Buyer</span>
                 </div>
               </div>
@@ -630,11 +644,11 @@ const LandingPage: React.FC = () => {
                 <Star />
                 <Star />
               </div>
-              <p>"As a dealership, we use Caralytix for all our pricing decisions. Game changer!"</p>
+              <p>"As a dealership, we use Caralytix for our pricing decisions. Game changer!"</p>
               <div className="testimonial-author">
                 <div className="author-avatar">MS</div>
                 <div className="author-info">
-                  <h4>Mike Stevens</h4>
+                  <h4>Ali Ahmadi</h4>
                   <span>Dealership Owner</span>
                 </div>
               </div>

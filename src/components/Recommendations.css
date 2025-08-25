@@ -1,5 +1,5 @@
 .recommendations-card.improved-recommendations {
-	max-width: 55vw;
+	max-width: 40vw;
 	margin: 0rem auto;
 	border: 1px solid var(--border-color) !important;
 	background: var(--bg-card, #ffffff);
