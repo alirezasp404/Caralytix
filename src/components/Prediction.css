@@ -356,12 +356,11 @@
     grid-template-columns: 1fr;
     gap: 2rem;
   }
-  .tabs-capsule {
-  display: flex;
-  flex-direction: column;
-  background: var(--bg-card);
-  border-radius: 40px;
-  box-shadow: 0 2px 12px rgba(102, 126, 234, 0.08);
+.capsule-btn {
+  gap: 0;
+  font-size: 0.9rem;
+  font-weight: 450;
+  padding: 0.5rem 1rem;
 }
 .prediction-form{
   gap: 0.5rem !important;

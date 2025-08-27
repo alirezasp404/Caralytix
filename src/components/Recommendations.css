@@ -448,12 +448,21 @@
 
 	.search-input{
 		max-width: 50%;
-		font-size: 0.5em !important;
+		font-size: 1rem;
 
 	}
+	.price-value{
+		font-size: 0.8rem !important;
+	    margin-left: 0;
+	}
+	.price-label {
+		font-size: 0.9rem;
+	}
 	.submit-btn {
-		max-width: 50%;
-		font-size: 0.8rem ;
+		max-width: 40%;
+		font-size: 0.7rem ;
+		padding: 0.5rem 0.8rem;
+
 
 	}
 	.card-title {
@@ -478,7 +487,10 @@
 		padding: 0;
 	}
 	.price-input{
-	font-size: 0.5rem;
+	font-size: 0.8rem;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 }

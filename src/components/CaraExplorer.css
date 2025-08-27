@@ -138,7 +138,20 @@
 .recommendation-item-card{
   max-width: 90%;
 }
+.price-label{
+  font-size: 0.9rem;
+}
+	.price-value{
+		font-size: 0.8rem !important;
+	    margin-left: 0;
+	}
 }
 .price-value{
   font-size: 1rem;
+}
+.search-input{
+  font-size: 0.8rem;
+   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
