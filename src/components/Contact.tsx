@@ -5,6 +5,7 @@ import { Car, Mail, Phone, MapPin, Send, MessageSquare, Clock } from 'lucide-rea
 import './Contact.css'
 import Footer from './Footer'
 import Header from './Header'
+import Swal from 'sweetalert2'
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -44,7 +45,11 @@ const Contact: React.FC = () => {
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false)
-      alert('Thank you for your message! We\'ll get back to you soon.')
+      Swal.fire({
+      icon: 'success',
+      title: 'Success!',
+      text: 'Thank you for your message! We\'ll get back to you soon.',
+    });
       setFormData({
         name: '',
         email: '',
@@ -192,10 +197,10 @@ const Contact: React.FC = () => {
             <div className="quick-actions">
               <h3>Quick Actions</h3>
               <div className="action-buttons">
-                <button className="action-button" onClick={() => window.open('https://calendly.com/caralytix-demo', '_blank')}>
+                <Link className="action-button" to="/prediction" >
                   <MessageSquare size={20} />
                   Schedule Demo
-                </button>
+                </Link>
               </div>
             </div>
           </div>

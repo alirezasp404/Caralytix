@@ -94,6 +94,12 @@
   transition: all 0.3s ease;
 }
 
+/* @media (max-width: 700px) {
+  .landing-page {
+    padding-top: 60px; /* Height of the fixed header */
+  }
+} */
+
 /* Container */
 .container {
   max-width: 1200px;
@@ -102,6 +108,7 @@
 
 /* Market Insights Section */
 .market-insights {
+    max-width: 100vw;
   padding: 6rem 1rem;
   background: var(--bg-tertiary);
 }
@@ -188,19 +195,22 @@
 
 /* Benefits Section */
 .benefits-section {
+  max-width: 100vw;
   padding: 6rem 1rem;
   background: var(--bg-primary);
 }
 
 .benefits-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 5rem;
   margin-top: 3rem;
+  padding: 2rem;
 }
 
 /* Brands Section */
 .brands-section {
+  max-width: 100vw;
   padding: 6rem 1rem;
   background: var(--bg-secondary);
   position: relative;
@@ -275,7 +285,7 @@
 }
 
 .brands-section .container {
-  max-width: 1200px;
+  max-width: 100vw;
   margin: 0 auto;
   padding: 0 1rem;
 }
@@ -607,6 +617,7 @@
 
 /* FAQ Section */
 .faq-section {
+  margin: 1rem 1rem;
   padding: 6rem 1rem;
   background: var(--bg-secondary);
   position: relative;
@@ -1017,10 +1028,12 @@
 
 /* Hero Section */
 .hero {
-  padding:0;
+  padding:1rem 1rem;
   background: var(--gradient-primary);
   color: var(--text-primary);
   min-height: 90vh;
+  max-width: 100vw;
+
   display: flex;
   align-items: center;
   position: relative;
@@ -1056,9 +1069,9 @@
 }
 
 .hero-container {
-  max-width: 1600px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 1rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
@@ -1106,18 +1119,19 @@
   font-size: 1.25rem;
   margin-bottom: 2rem;
   opacity: 0.9;
-  max-width: 700px;
+  max-width: 80vw;
 }
 
 .hero-buttons {
   display: flex;
   gap: 1rem;
   margin-bottom: 3rem;
+  max-width: 35vw;
 }
 
 .hero-stats {
   display: flex;
-  gap: 3rem;
+  gap: 2rem;
 }
 
 .stat {
@@ -1143,8 +1157,7 @@
   align-items: center;
   min-height: 400px;
   position: relative;
-  width: 100%;
-  max-width: 500px;
+  width: 70%;
   margin: 0 auto;
 }
 
@@ -1306,6 +1319,9 @@ section {
 /* Features Section */
 .features {
   background: var(--bg-secondary);
+  max-width: 100vw;
+  padding: 6rem 1rem;
+
   
 }
 
@@ -1444,6 +1460,9 @@ section {
 
 /* Testimonials Section */
 .testimonials {
+    max-width: 100vw;
+  padding: 6rem 1rem;
+
   background: var(--bg-secondary);
 }
 
@@ -1683,6 +1702,9 @@ section {
     flex-direction: column;
     text-align: center;
   }
+  .benefits-grid{
+    padding: 0;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1713,8 +1735,19 @@ section {
   .step-number::after {
     display: none;
   }
+  .hero-image{
+      width:100%;
+      margin: 0 auto;
+  }
 }
 
 .btn-estimate:hover {
   color: white;
+}
+.how-it-works{
+    max-width: 100vw;
+
+}
+.hero-content{
+  max-width: 90%;
 }

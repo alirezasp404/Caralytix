@@ -125,9 +125,7 @@
   transition: all 0.3s ease;
 }
 
-.contact-form-section {
-  padding: 2.5rem;
-}
+
 
 /* Headings */
 h2 {
@@ -369,7 +367,7 @@ h3 {
 }
 
 .footer-content {
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 0 2rem;
   display: grid;
@@ -452,6 +450,10 @@ h3 {
   .footer-social p {
     text-align: center;
   }
+ .form-row {
+  display: flex !important;
+  flex-direction: column;
+ }
 }
 
 .contact-hero-content {

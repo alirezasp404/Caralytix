@@ -1,5 +1,7 @@
 .recommendations-card.improved-recommendations {
 	max-width: 40vw;
+	min-width: 30vw;
+
 	margin: 0rem auto;
 	border: 1px solid var(--border-color) !important;
 	background: var(--bg-card, #ffffff);
@@ -7,7 +9,6 @@
 	box-shadow: var(--shadow-heavy) !important;
 	padding: 1.5rem 1.5rem 1.5rem 1.5rem;
 	transition: all 0.3s ease;
-	
 }
 .price-input::-webkit-outer-spin-button,
 .price-input::-webkit-inner-spin-button {
@@ -434,4 +435,50 @@
 	max-width: 80%;
 	margin: 0 auto;
 	line-height: 1.6;
+}
+.price-input{
+	max-width: 35vw;
+	font-size: 0.9rem;
+}
+.submit-btn{
+	font-size: 0.9rem;
+
+}
+@media (max-width: 768px) {
+
+	.search-input{
+		max-width: 50%;
+		font-size: 0.5em !important;
+
+	}
+	.submit-btn {
+		max-width: 50%;
+		font-size: 0.8rem ;
+
+	}
+	.card-title {
+		font-size: 1.2rem ;
+	}
+	.recommendations-card.improved-recommendations {
+	max-width: 100%;
+	}
+
+
+	.rec-title {
+	font-size: 1rem;
+	flex-direction: column;
+	align-items: start;
+   }
+ 	.rec-details {
+	font-size: 1rem;
+	flex-direction: column;
+	gap: 0;
+	}
+	.recommendations-list {
+		padding: 0;
+	}
+	.price-input{
+	font-size: 0.5rem;
+}
+
 }
