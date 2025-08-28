@@ -320,7 +320,7 @@ const LandingPage: React.FC = () => {
             </h1>
             <p className="hero-subtitle">
               Get accurate car price predictions using advanced AI algorithms. 
-              Analyze market trends, compare prices, and make informed decisions with 95% accuracy.
+              Analyze market trends, compare prices, and make informed decisions with 78% accuracy.
             </p>
             <div className="hero-buttons">
               <Link to="/prediction" className="btn-primary btn-large btn-estimate">
