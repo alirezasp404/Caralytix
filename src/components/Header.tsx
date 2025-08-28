@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Car, Sun, Moon, Menu, X, LogOut, User } from 'lucide-react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { getTheme, setTheme } from '../theme';
+import LogoIcon from '../assets/caralytix-logo.png';
 import './Header.css';
 
 interface HeaderProps {
@@ -85,9 +86,9 @@ const Header: React.FC<HeaderProps> = ({ showThemeToggle = true, showAuthButtons
   return (
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="nav-container">
-        <div className="nav-logo">
-          <Link to="/">
-            <Car className="logo-icon" />
+        <div >
+          <Link className="nav-logo" to="/">
+            <img src={LogoIcon} className="logo-icon" />
             <span className="logo-text">Caralytix</span>
           </Link>
         </div>

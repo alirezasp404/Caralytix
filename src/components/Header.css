@@ -1,6 +1,4 @@
 .nav-logo .logo-icon {
-  width: 32px;
-  height: 32px;
   animation: car-bounce-in 0.8s cubic-bezier(.68,-0.55,.27,1.55);
   transition: transform 0.2s;
 }
@@ -52,9 +50,9 @@
 }
 
 .nav-container {
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0.75rem 2rem;
+  padding: 0 3rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -70,10 +68,6 @@
   text-decoration: none;
 }
 
-.nav-logo .logo-icon {
-  width: 32px;
-  height: 32px;
-}
 
 .nav-links {
   display: flex;
@@ -161,15 +155,10 @@
   font-size: 1.5rem;
   cursor: pointer;
 }
-.logo-icon{
-  padding-top: 0.4rem;
-}
+
 @media (max-width: 900px) {
   .nav-links {
     gap: 1rem;
-  }
-  .nav-container {
-    padding: 0.75rem 1rem;
   }
 }
 
@@ -181,9 +170,12 @@
 .nav-actions {
   gap: 0 !important;
 }
-
+.nav-container {
+  padding: 0 0.8rem;
+}
 .logo-icon{
-  padding-top: 0.8rem;
+  max-width: 2.5rem ;
+  max-height:2.5rem ;
 }
   .nav-links {
     display: none;
@@ -229,13 +221,16 @@
   font-size: 0.6rem;
 }
 .logo-text{
-  font-size: 1.5rem;
+  font-size: 1.1rem;
 }
 .theme-icon,
 .theme-toggle svg,
 .theme-toggle .theme-icon svg {
   min-width: 1.7rem !important;
   min-height: 1.7rem  !important;
+}
+.nav-logo{
+  gap: 0 !important;
 }
 }
 
@@ -288,7 +283,6 @@ body.dark .btn-primary:hover {
 .nav-container {
   max-width: 100vw;
   margin: 0 auto;
-  padding: 0 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -305,8 +299,8 @@ body.dark .btn-primary:hover {
 }
 
 .logo-icon {
-  width: 2rem;
-  height: 2rem;
+  width: 4.5rem;
+  height: 4.5rem;
   color: var(--accent-primary);
 }
 

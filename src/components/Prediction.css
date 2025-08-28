@@ -129,14 +129,7 @@
   z-index: 1000;
   padding: 1rem 0;
 }
-.nav-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+
 .nav-logo {
   display: flex;
   align-items: center;
@@ -146,10 +139,7 @@
   color: var(--accent-primary);
   text-decoration: none;
 }
-.nav-logo .logo-icon {
-  width: 2rem;
-  height: 2rem;
-}
+
 .nav-links {
   display: flex;
   gap: 2rem;

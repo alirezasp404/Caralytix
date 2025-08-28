@@ -1,5 +1,7 @@
-import { Car, Twitter, Linkedin, Github } from 'lucide-react';
+import {Twitter, Linkedin, Github } from 'lucide-react';
 import './Footer.css';
+import LogoIcon from '../assets/caralytix-logo.png';
+
 import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
@@ -9,7 +11,7 @@ const Footer: React.FC = () => {
           <div className="footer-content">
             <div className="footer-section">
               <div className="footer-logo">
-                <Car className="logo-icon" />
+                <img src={LogoIcon} className="logo-icon" />
                 <span className="logo-text">Caralytix</span>
               </div>
               <p>AI-powered car price prediction platform</p>

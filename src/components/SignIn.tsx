@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
-import { Sun, Moon } from 'lucide-react'
 import { getTheme, setTheme, syncThemeWithBody } from '../theme'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { Car, Eye, EyeOff, Mail, Lock } from 'lucide-react'
 import './Auth.css'
+import LogoIcon from '../assets/caralytix-logo.png';
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
@@ -132,7 +132,7 @@ const SignIn: React.FC = () => {
       <div className="auth-card">
         <div className="auth-header">
           <Link to="/" className="auth-logo">
-            <Car className="logo-icon" />
+            <img src={LogoIcon} className="logo-icon" />
             <span className="logo-text">Caralytix</span>
           </Link>
           <h1>Welcome Back</h1>
