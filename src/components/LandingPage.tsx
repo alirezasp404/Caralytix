@@ -330,7 +330,7 @@ const LandingPage: React.FC = () => {
             </div>
             <div className="hero-stats">
               <div className="stat">
-                <span className="stat-number">95%</span>
+                <span className="stat-number">78%</span>
                 <span className="stat-label">Accuracy Rate</span>
               </div>
               <div className="stat">
